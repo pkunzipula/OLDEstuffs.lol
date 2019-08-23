@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Homepage from "./components/Homepage";
+import AddStuffs from "./components/AddStuffs";
+import "./App.css";
+import { openDB } from "idb";
+
+const storeStuffs = async activity => {
+  // console.log(title, description);
+
+  const dbName = "stuffs.lol";
+  const storeName = "stuffs";
+  const version = 1;
+
+  const db = await openDB(dbName, version, {
+    upgrade(db, oldVersion, newVersion, transaction) {
+      db.createObjectStore(storeName, { autoIncrement: true });
+    }
+  });
+
+  const tx = await db.transaction(storeName, "readwrite");
+  const store = await tx.objectStore(storeName);
+  await store.put(activity);
+  await tx.done;
+};
 
 function App() {
+  const [screen, setScreen] = useState("addStuffs");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {screen === "homepage" && <Homepage setScreen={setScreen} />}
+      {screen === "addStuffs" && <AddStuffs storeStuffs={storeStuffs} />}
     </div>
   );
 }
