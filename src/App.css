@@ -95,3 +95,9 @@ body {
   border-color: transparent;
   cursor: pointer;
 }
+
+.AddStuffs button.btn-gohome {
+  padding: 10px;
+  font-size: 33px;
+  background: crimson;
+}

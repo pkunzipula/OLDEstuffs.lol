@@ -9,13 +9,13 @@ const Homepage = ({ setScreen }) => {
   return (
     <header className="Homepage">
       <img src={logo} className="Homepage-logo" alt="logo" />
-      <div class="container">
-        <div class="left">
+      <div className="container">
+        <div className="left">
           <img src={screenshot} className="screenshot" alt="screenshot" />
         </div>
-        <div class="right">
+        <div className="right">
           <p>
-            Keep track of the Stuffs you do daily in this fun(ish) to use app!
+            Keep track of the Stuffs you do daily in this fun(ish)-to-use app!
           </p>
           <button onClick={addStuffs}>Start!</button>
         </div>

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
-const AddStuffs = ({ storeStuffs }) => {
+const AddStuffs = ({ setScreen, storeStuffs }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const saveStuffs = () => {
     storeStuffs({ title, description });
+  };
+  const goHome = () => {
+    setScreen("homepage");
   };
   return (
     <div className="AddStuffs">
@@ -15,6 +18,10 @@ const AddStuffs = ({ storeStuffs }) => {
         onChange={event => setDescription(event.target.value)}
       ></textarea>
       <button onClick={saveStuffs}>Save Your Stuffs!</button>
+      <br />
+      <button onClick={goHome} className="btn-gohome">
+        &larr; Go Back Home
+      </button>
     </div>
   );
 };
