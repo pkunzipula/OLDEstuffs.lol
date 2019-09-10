@@ -35,7 +35,7 @@ const storeStuffs = async stuff => {
 };
 
 function App() {
-  const [screen, setScreen] = useState("homepage");
+  const [screen, setScreen] = useState("stuffs");
   const [stuffs, setStuffs] = useState([]);
 
   useEffect(() => {
