@@ -5,6 +5,7 @@ const AddStuffs = ({ setScreen, storeStuffs }) => {
   const [description, setDescription] = useState("");
   const saveStuffs = () => {
     storeStuffs({ title, description });
+    setScreen("stuffs");
   };
   const goHome = () => {
     setScreen("homepage");

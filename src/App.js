@@ -20,7 +20,7 @@ const initDatabase = async () => {
 
 const initStuffs = async () => {
   const [db, storeName] = await initDatabase();
-  const tx = db.transaction(storeName, "readonly");
+  const tx = await db.transaction(storeName, "readonly");
   const stuffs = await tx.objectStore(storeName).getAll();
   await tx.done;
   return stuffs;
@@ -28,7 +28,7 @@ const initStuffs = async () => {
 
 const storeStuffs = async stuff => {
   const [db, storeName] = await initDatabase();
-  const tx = db.transaction(storeName, "readwrite");
+  const tx = await db.transaction(storeName, "readwrite");
   const stuffs = await tx.objectStore(storeName);
   await stuffs.put(stuff);
   await tx.done;
@@ -51,7 +51,9 @@ function App() {
       {screen === "addStuffs" && (
         <AddStuffs setScreen={setScreen} storeStuffs={storeStuffs} />
       )}
-      {screen === "stuffs" && <StuffsList stuffs={stuffs} />}
+      {screen === "stuffs" && (
+        <StuffsList stuffs={stuffs} setScreen={setScreen} />
+      )}
     </div>
   );
 }

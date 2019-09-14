@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import Detail from "./Stuffs/Detail";
+import SidebarMobile from "./Stuffs/SidebarMobile";
+import SidebarDesktop from "./Stuffs/SidebarDesktop";
 
-const StuffsList = ({ stuffs }) => {
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
+
+const StuffsList = ({ stuffs, setScreen }) => {
+  const [showStuffs, setShowStuffs] = useState("false");
+  const [currentStuffs, setCurrentStuffs] = useState({});
+
   return (
-    <div className="StuffsList">
-      <ul className="List">
-        {stuffs.map((stuff, index) => {
-          return <li key={index}>{stuff.title}</li>;
-        })}
-      </ul>
-      <div className="Detail"></div>
+    <div
+      className="StuffsList"
+      css={css`
+        display: grid;
+        grid-template-columns: 300px auto;
+        grid-template-areas: "sidebar-desktop main";
+        width: 100vw;
+        height: 100vh;
+        color: #131a22;
+        @media (max-width: 768px) {
+          grid-template-columns: 80px auto;
+          grid-template-areas: "sidebar-mobile ${
+            showStuffs ? "sidebar-desktop" : "main"
+          }";
+        }
+      `}
+    >
+      <SidebarDesktop
+        stuffs={stuffs}
+        setShowStuffs={setShowStuffs}
+        showStuffs={showStuffs}
+        setCurrentStuffs={setCurrentStuffs}
+        setScreen={setScreen}
+      />
+      <SidebarMobile setShowStuffs={setShowStuffs} showStuffs={showStuffs} />
+      <Detail showStuffs={showStuffs} currentStuffs={currentStuffs} />
     </div>
   );
 };
