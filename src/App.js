@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Homepage from "./components/Homepage";
-import AddStuffs from "./components/AddStuffs";
+import AddStuffs from "./components/AddStuffs/AddStuffs";
 import "./App.css";
-import { openDB } from "idb";
+import { openDB, deleteDB } from "idb";
 import StuffsList from "./components/StuffsList";
 
 const initDatabase = async () => {
@@ -20,16 +20,16 @@ const initDatabase = async () => {
 
 const initStuffs = async () => {
   const [db, storeName] = await initDatabase();
-  const tx = await db.transaction(storeName, "readonly");
-  const stuffs = await tx.objectStore(storeName).getAll();
+  const tx = db.transaction(storeName, "readonly");
+  const stuffs = tx.objectStore(storeName).getAll();
   await tx.done;
   return stuffs;
 };
 
 const storeStuffs = async stuff => {
   const [db, storeName] = await initDatabase();
-  const tx = await db.transaction(storeName, "readwrite");
-  const stuffs = await tx.objectStore(storeName);
+  const tx = db.transaction(storeName, "readwrite");
+  const stuffs = tx.objectStore(storeName);
   await stuffs.put(stuff);
   await tx.done;
 };
@@ -40,10 +40,10 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const stuffs = await initStuffs();
-      setStuffs(stuffs);
+      const store = await initStuffs();
+      setStuffs(store);
     })();
-  }, []);
+  }, [setStuffs]);
 
   return (
     <div className="App">

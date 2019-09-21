@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Detail from "./Stuffs/Detail";
+import { useState } from "react";
+import StuffsDetail from "./StuffsDetail/StuffsDetail";
 import SidebarMobile from "./Stuffs/SidebarMobile";
 import SidebarDesktop from "./Stuffs/SidebarDesktop";
 
@@ -20,6 +20,7 @@ const StuffsList = ({ stuffs, setScreen }) => {
         width: 100vw;
         height: 100vh;
         color: #131a22;
+        
         @media (max-width: 768px) {
           grid-template-columns: 80px auto;
           grid-template-areas: "sidebar-mobile ${
@@ -36,7 +37,7 @@ const StuffsList = ({ stuffs, setScreen }) => {
         setScreen={setScreen}
       />
       <SidebarMobile setShowStuffs={setShowStuffs} showStuffs={showStuffs} />
-      <Detail showStuffs={showStuffs} currentStuffs={currentStuffs} />
+      <StuffsDetail showStuffs={showStuffs} currentStuffs={currentStuffs} />
     </div>
   );
 };

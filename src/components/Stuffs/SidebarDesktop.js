@@ -19,8 +19,12 @@ const SidebarDesktop = ({
       text-align: left;
       display: grid;
       grid-template-rows: auto 60px;
+      position: fixed;
+      overflow-y: auto;
+      width: 300px;
       @media (max-width: 768px) {
         display: ${showStuffs ? "block" : "none"};
+        position: static;
       }
     `}
   >

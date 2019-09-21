@@ -1,10 +1,18 @@
 import React, { useState } from "react";
+import MapPicker from "./MapPicker";
+import DatePicker from "../StuffsDetail/DatePicker";
 
 const AddStuffs = ({ setScreen, storeStuffs }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [datetime, setDatetime] = useState(new Date());
+  const [location, setLocation] = useState({
+    lat: 36.015964,
+    lng: -115.176429
+  });
+
   const saveStuffs = () => {
-    storeStuffs({ title, description });
+    storeStuffs({ title, description, location, datetime });
     setScreen("stuffs");
   };
   const goHome = () => {
@@ -14,6 +22,9 @@ const AddStuffs = ({ setScreen, storeStuffs }) => {
     <div className="AddStuffs">
       <h2>Title of Stuffs: {title}</h2>
       <input onChange={event => setTitle(event.target.value)} />
+      <DatePicker datetime={datetime} setDatetime={setDatetime} />
+      <MapPicker setLocation={setLocation} location={location} />
+
       <h2>Describe this Stuffs</h2>
       <textarea
         onChange={event => setDescription(event.target.value)}
