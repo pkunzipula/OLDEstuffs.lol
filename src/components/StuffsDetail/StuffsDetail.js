@@ -1,6 +1,6 @@
 import StuffsLocation from "./StuffsLocation";
 import StuffsDate from "./StuffsDate";
-
+import xss from "xss";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
@@ -29,14 +29,27 @@ const StuffsDetail = ({ showStuffs, currentStuffs }) => {
               margin-left: 50px;
             `}
           >
-            {currentStuffs.title}
+            {(currentStuffs.sanitizedTitle && currentStuffs.sanitizedTitle) ||
+              currentStuffs.title}
           </h1>
           <StuffsLocation location={currentStuffs.location} />
         </div>
 
         <StuffsDate datetime={currentStuffs.datetime} />
       </div>
-      <p>{currentStuffs.description}</p>
+      <div
+        css={css`
+          padding-left: 50px;
+          text-align: left;
+        `}
+        dangerouslySetInnerHTML={{
+          __html:
+            xss(
+              currentStuffs.sanitizedDescription &&
+                currentStuffs.sanitizedDescription
+            ) || xss(currentStuffs.description)
+        }}
+      ></div>
     </div>
   );
 };

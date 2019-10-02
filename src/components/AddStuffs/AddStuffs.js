@@ -6,8 +6,9 @@ import MapPicker from "./MapPicker";
 import DatePicker from "../StuffsDetail/DatePicker";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import xss from "xss";
 
-const AddStuffs = ({ setScreen, storeStuffs }) => {
+const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [datetime, setDatetime] = useState(new Date());
@@ -17,11 +18,21 @@ const AddStuffs = ({ setScreen, storeStuffs }) => {
   });
 
   const saveStuffs = () => {
-    storeStuffs({ title, description, location, datetime });
+    const options = {
+      whiteList: {
+        a: ["href", "title", "target"]
+      }
+    };
+    const sanitizedDescription = xss(description, options);
+    const sanitizedTitle = xss(title);
+    storeStuffs({ sanitizedTitle, sanitizedDescription, location, datetime });
     setScreen("stuffs");
   };
   const goHome = () => {
     setScreen("homepage");
+  };
+  const goToList = () => {
+    setScreen("stuffs");
   };
   return (
     <div
@@ -43,24 +54,31 @@ const AddStuffs = ({ setScreen, storeStuffs }) => {
             padding: 1rem;
             float: right;
             color: white;
-            cursor: pointer;
+            outline: none;
+            border-color: transparent;
           `}
         >
           Save Your Stuffs!
         </button>
-        <button
-          onClick={goHome}
-          css={css`
-            background-color: crimson;
-            color: white;
-            font-size: 1.4rem;
-            font-family: Fresca;
-            float: left;
-            cursor: pointer;
-          `}
-        >
-          &larr; Go Back Home
-        </button>
+        {comingFromHomepage ? (
+          ""
+        ) : (
+          <button
+            onClick={goToList}
+            css={css`
+              background-color: crimson;
+              color: white;
+              font-size: 1.4rem;
+              font-family: Fresca;
+              float: left;
+              outline: none;
+              padding: 0.4rem;
+              border-color: transparent;
+            `}
+          >
+            &larr; Go Back Home
+          </button>
+        )}
       </div>
       <div
         css={css`
@@ -92,7 +110,6 @@ const AddStuffs = ({ setScreen, storeStuffs }) => {
           onChange={value => setDescription(value)}
           placeholder="Describe this Stuffs"
           css={css`
-            height: 400px;
             font-family: Fresca;
             font-size: 1.5rem;
             margin-top: 90px;

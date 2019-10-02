@@ -46,7 +46,7 @@ const sortStuffs = async () => {
 };
 
 function App() {
-  const [screen, setScreen] = useState("addStuffs");
+  const [screen, setScreen] = useState("homepage");
   const [stuffs, setStuffs] = useState([]);
 
   useEffect(() => {
@@ -59,6 +59,13 @@ function App() {
   return (
     <div className="App">
       {screen === "homepage" && <Homepage setScreen={setScreen} />}
+      {screen === "addStuffsFromHomepage" && (
+        <AddStuffs
+          comingFromHomepage
+          setScreen={setScreen}
+          storeStuffs={storeStuffs}
+        />
+      )}
       {screen === "addStuffs" && (
         <AddStuffs setScreen={setScreen} storeStuffs={storeStuffs} />
       )}

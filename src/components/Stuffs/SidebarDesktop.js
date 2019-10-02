@@ -95,7 +95,8 @@ const SidebarDesktop = ({
                     font-size: 1.2rem;
                   `}
                 >
-                  {stuff.title}
+                  {(stuff.sanitizedTitle && stuff.sanitizedTitle) ||
+                    stuff.title}
                 </span>
               </div>
             </li>

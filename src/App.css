@@ -2,102 +2,20 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family: Fresca;
 }
 
-.App {
-  text-align: center;
-}
-
-.Homepage-logo {
-  height: 35vmin;
-  margin-bottom: 5vmin;
-  pointer-events: none;
-}
-
-.Homepage {
-  background-color: white;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-
-.Homepage .container {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-column-gap: 50px;
-}
-
-.Homepage .container .left img {
-  width: 100%;
-  max-width: 300px;
-}
-
-.Homepage .container .right p {
-  width: 100%;
-  max-width: 300px;
-  text-align: left;
-}
-
-.Homepage .container .right button {
-  padding: 20px 0;
-  width: 100%;
-  background: #49ba37;
-  color: white;
+.ql-editor {
+  min-height: 300px !important;
   font-family: Fresca;
-  font-size: 44px;
-  outline: none;
-  border-color: transparent;
+  font-size: 1.5rem;
+}
+
+button:hover {
   cursor: pointer;
 }
-
-/* .AddStuffs {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 90vw;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.AddStuffs textarea,
-.AddStuffs button,
-.AddStuffs input {
-  display: block;
-  font-family: Fresca;
-  padding: 0.5rem;
-}
-
-.AddStuffs input {
-  font-size: 28px;
-}
-
-.AddStuffs textarea {
-  font-size: 21px;
-  min-height: 290px;
-  margin-bottom: 45px;
-}
-
-.AddStuffs button {
-  padding: 20px;
-  background: #49ba37;
-  color: white;
-  font-family: Fresca;
-  font-size: 44px;
-  outline: none;
-  border-color: transparent;
-  cursor: pointer;
-}
-
-.AddStuffs button.btn-gohome {
-  padding: 10px;
-  font-size: 33px;
-  background: crimson;
-} */
