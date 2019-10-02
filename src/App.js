@@ -34,13 +34,24 @@ const storeStuffs = async stuff => {
   await tx.done;
 };
 
+const sortStuffs = async () => {
+  let stuffs = await initStuffs();
+  // sort the stuffs in DESC order by Date
+
+  stuffs = stuffs.sort((a, b) => {
+    return new Date(b.datetime) - new Date(a.datetime);
+  });
+
+  return stuffs;
+};
+
 function App() {
-  const [screen, setScreen] = useState("stuffs");
+  const [screen, setScreen] = useState("addStuffs");
   const [stuffs, setStuffs] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const store = await initStuffs();
+      const store = await sortStuffs();
       setStuffs(store);
     })();
   }, [setStuffs]);

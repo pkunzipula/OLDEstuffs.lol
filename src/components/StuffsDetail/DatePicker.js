@@ -11,10 +11,20 @@ const DatePicker = ({ datetime, setDatetime }) => {
   };
 
   return (
-    <div>
-      <h2>Date and Time</h2>
+    <div
+      css={css`
+        width: 100%;
+        text-align: left;
+      `}
+    >
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <DateTimePicker value={datetime} onChange={setNewDatetime} />
+        <DateTimePicker
+          value={datetime}
+          onChange={setNewDatetime}
+          css={css`
+            width: 100%;
+          `}
+        />
       </MuiPickersUtilsProvider>
     </div>
   );

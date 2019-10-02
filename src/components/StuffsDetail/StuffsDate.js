@@ -4,6 +4,8 @@ let moment = require("moment");
 
 const StuffsDate = ({ datetime }) => {
   let month = moment(datetime).format("MMMM");
+  let day = moment(datetime).format("D");
+  let time = moment(datetime).format("h:mm a");
   if (!datetime) {
     return <div></div>;
   }
@@ -20,14 +22,23 @@ const StuffsDate = ({ datetime }) => {
           display: block;
         `}
       >
-        {datetime.getDate()}
+        {day}
       </span>
       <span
         css={css`
           font-size: 1.8rem;
+          display: block;
         `}
       >
         {month}
+      </span>
+      <span
+        css={css`
+          font-size: 1.4rem;
+          display: block;
+        `}
+      >
+        {time}
       </span>
     </div>
   );

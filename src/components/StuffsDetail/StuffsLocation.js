@@ -17,6 +17,7 @@ const initializeMap = location => {
     boxZoom: false,
     doubleClickZoom: false,
     zoomControl: false,
+    scrollWheelZoom: false,
     trackResize: false
   });
 

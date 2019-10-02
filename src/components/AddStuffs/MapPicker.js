@@ -51,12 +51,11 @@ const MapPicker = ({ location, setLocation }) => {
 
   return (
     <div className="MapPicker">
-      <h2>Map</h2>
       <div
         id="mapid"
         css={css`
-          height: 400px;
-          width: 600px;
+          height: 180px;
+          width: calc(100% - 25px);
         `}
       />
     </div>

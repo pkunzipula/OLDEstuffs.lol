@@ -9,7 +9,6 @@ import { css, jsx } from "@emotion/core";
 const StuffsList = ({ stuffs, setScreen }) => {
   const [showStuffs, setShowStuffs] = useState("false");
   const [currentStuffs, setCurrentStuffs] = useState({});
-
   return (
     <div
       className="StuffsList"
