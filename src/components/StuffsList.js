@@ -2,11 +2,13 @@ import { useState } from "react";
 import StuffsDetail from "./StuffsDetail/StuffsDetail";
 import SidebarMobile from "./Stuffs/SidebarMobile";
 import SidebarDesktop from "./Stuffs/SidebarDesktop";
+import EmptyStateScreen from "./StuffsDetail/EmptyStateScreen";
+import { Router } from "@reach/router";
 
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
-const StuffsList = ({ stuffs, setScreen }) => {
+const StuffsList = ({ stuffs, deleteStuffs, reloadStuffs }) => {
   const [showStuffs, setShowStuffs] = useState("false");
   const [currentStuffs, setCurrentStuffs] = useState({});
   return (
@@ -33,10 +35,20 @@ const StuffsList = ({ stuffs, setScreen }) => {
         setShowStuffs={setShowStuffs}
         showStuffs={showStuffs}
         setCurrentStuffs={setCurrentStuffs}
-        setScreen={setScreen}
       />
       <SidebarMobile setShowStuffs={setShowStuffs} showStuffs={showStuffs} />
-      <StuffsDetail showStuffs={showStuffs} currentStuffs={currentStuffs} />
+      <Router>
+        <StuffsDetail
+          stuffs={stuffs}
+          showStuffs={showStuffs}
+          currentStuffs={currentStuffs}
+          setCurrentStuffs={setCurrentStuffs}
+          reloadStuffs={reloadStuffs}
+          deleteStuffs={deleteStuffs}
+          path=":stuffsId"
+        />
+        <EmptyStateScreen path="/stuffs/" />
+      </Router>
     </div>
   );
 };

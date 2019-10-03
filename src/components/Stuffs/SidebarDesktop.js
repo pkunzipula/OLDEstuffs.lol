@@ -1,14 +1,13 @@
-import React from "react";
-
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import { navigate } from "@reach/router";
+
 let moment = require("moment");
 const SidebarDesktop = ({
   stuffs,
   showStuffs,
   setShowStuffs,
-  setCurrentStuffs,
-  setScreen
+  setCurrentStuffs
 }) => {
   return (
     <div
@@ -26,6 +25,7 @@ const SidebarDesktop = ({
         @media (max-width: 768px) {
           display: ${showStuffs ? "block" : "none"};
           position: static;
+          width: 100%;
         }
       `}
     >
@@ -55,6 +55,7 @@ const SidebarDesktop = ({
                 }
               `}
               onClick={() => {
+                navigate("/stuffs/" + stuff.key);
                 setCurrentStuffs(stuff);
                 setShowStuffs(false);
               }}
@@ -105,7 +106,7 @@ const SidebarDesktop = ({
       </ul>
       <div>
         <button
-          onClick={() => setScreen("addStuffs")}
+          onClick={() => navigate("/add-stuffs")}
           css={css`
             text-align: center;
             font-size: 2rem;

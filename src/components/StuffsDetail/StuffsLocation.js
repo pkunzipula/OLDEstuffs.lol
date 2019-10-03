@@ -62,7 +62,6 @@ const StuffsLocation = ({ location }) => {
       className="MapPicker"
       css={css`
         padding: 30px 0;
-        margin-left: 50px;
       `}
     >
       <div

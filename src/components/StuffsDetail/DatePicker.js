@@ -17,12 +17,22 @@ const DatePicker = ({ datetime, setDatetime }) => {
         text-align: left;
       `}
     >
+      <h2
+        css={css`
+          font-weight: normal;
+        `}
+      >
+        Date & Time
+      </h2>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <DateTimePicker
           value={datetime}
           onChange={setNewDatetime}
           css={css`
             width: 100%;
+            @media (max-width: 800px) {
+              margin-top: 0;
+            }
           `}
         />
       </MuiPickersUtilsProvider>

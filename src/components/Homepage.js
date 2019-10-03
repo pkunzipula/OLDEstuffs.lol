@@ -2,10 +2,11 @@
 import { css, jsx } from "@emotion/core";
 import logo from "../img/logo.svg";
 import screenshot from "../img/screenshot.png";
+import { navigate } from "@reach/router";
 
-const Homepage = ({ setScreen }) => {
+const Homepage = () => {
   const addStuffs = () => {
-    setScreen("addStuffsFromHomepage");
+    navigate("/start-stuffs");
   };
   return (
     <header

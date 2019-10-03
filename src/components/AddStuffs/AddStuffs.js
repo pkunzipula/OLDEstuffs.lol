@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-
+import { navigate } from "@reach/router";
 import { useState } from "react";
 import MapPicker from "./MapPicker";
 import DatePicker from "../StuffsDetail/DatePicker";
@@ -8,7 +8,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import xss from "xss";
 
-const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
+const AddStuffs = ({ comingFromHomepage, storeStuffs, reloadStuffs }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [datetime, setDatetime] = useState(new Date());
@@ -16,8 +16,11 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
     lat: 36.015964,
     lng: -115.176429
   });
-
   const saveStuffs = () => {
+    if (!title) {
+      alert("Please enter a title");
+      return;
+    }
     const options = {
       whiteList: {
         a: ["href", "title", "target"]
@@ -25,14 +28,20 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
     };
     const sanitizedDescription = xss(description, options);
     const sanitizedTitle = xss(title);
-    storeStuffs({ sanitizedTitle, sanitizedDescription, location, datetime });
-    setScreen("stuffs");
+    storeStuffs({
+      sanitizedTitle,
+      sanitizedDescription,
+      location,
+      datetime
+    });
+    reloadStuffs();
+    navigate("/stuffs");
   };
   const goHome = () => {
-    setScreen("homepage");
+    navigate("/");
   };
   const goToList = () => {
-    setScreen("stuffs");
+    navigate("stuffs");
   };
   return (
     <div
@@ -40,8 +49,13 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
       css={css`
         display: grid;
         grid-template-rows: 100px 150px 640px;
-        max-width: 900px;
-        margin: 40px auto;
+        max-width: 800px;
+        margin: 22px auto;
+
+        @media (max-width: 800px) {
+          padding: 0 22px;
+          grid-template-rows: 100px 350px 640px;
+        }
       `}
     >
       <div>
@@ -50,7 +64,7 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
           css={css`
             background-color: limegreen;
             font-family: Fresca;
-            font-size: 2.2rem;
+            font-size: 1.4rem;
             padding: 1rem;
             float: right;
             color: white;
@@ -72,7 +86,7 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
               font-family: Fresca;
               float: left;
               outline: none;
-              padding: 0.4rem;
+              padding: 1rem;
               border-color: transparent;
             `}
           >
@@ -83,12 +97,21 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
       <div
         css={css`
           display: grid;
-          grid-template-columns: 50% 50%;
+          grid-template-columns: 1fr 1fr;
           column-gap: 25px;
           text-align: center;
+
+          @media (max-width: 800px) {
+            grid-template-columns: 100%;
+          }
         `}
       >
-        <div>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+          `}
+        >
           <input
             onChange={event => setTitle(event.target.value)}
             placeholder="Title of Stuffs"
@@ -97,7 +120,10 @@ const AddStuffs = ({ comingFromHomepage, setScreen, storeStuffs }) => {
               font-family: Fresca;
               font-size: 1.8rem;
               padding: 8px;
-              margin-bottom: 90px;
+              margin-bottom: auto;
+              @media (max-width: 800px) {
+                margin-bottom: 40px;
+              }
             `}
           />
           <DatePicker datetime={datetime} setDatetime={setDatetime} />

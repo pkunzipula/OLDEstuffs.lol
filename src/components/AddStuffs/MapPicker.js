@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -8,34 +8,44 @@ import { css, jsx } from "@emotion/core";
 let mapInstance = null;
 
 const initializeMap = (location, setLocation) => {
-  mapInstance = L.map("mapid").setView(
-    [location.lat || 36.015964, location.lng || -115.176429],
-    13
+  mapInstance = L.map("mapid");
+  window.navigator.geolocation.getCurrentPosition(
+    position => {
+      const latlng = [
+        location.lat || position.coords.latitude,
+        location.lng || position.coords.longitude
+      ];
+      if (!mapInstance) {
+        return;
+      }
+      mapInstance = mapInstance.setView(latlng, 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(mapInstance);
+      L.marker(latlng)
+        .addTo(mapInstance)
+        .bindPopup("Activity Location")
+        .openPopup();
+      const popup = L.popup();
+
+      mapInstance.on("click", event => {
+        console.log(event.latlng);
+        setLocation({
+          lat: event.latlng.lat,
+          lng: event.latlng.lng
+        });
+        popup
+          .setLatLng(event.latlng)
+          .setContent("Activity Location: " + event.latlng.toString())
+          .openOn(mapInstance);
+      });
+    },
+    error => {
+      console.error(error);
+    },
+    {}
   );
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(mapInstance);
-
-  L.marker([location.lat || 36.015964, location.lng || -115.176429])
-    .addTo(mapInstance)
-    .bindPopup("Activity Location")
-    .openPopup();
-
-  const popup = L.popup();
-
-  mapInstance.on("click", event => {
-    console.log(event.latlng);
-    setLocation({
-      lat: event.latlng.lat,
-      lng: event.latlng.lng
-    });
-    popup
-      .setLatLng(event.latlng)
-      .setContent("Activity Location: " + event.latlng.toString())
-      .openOn(mapInstance);
-  });
 };
 
 const MapPicker = ({ location, setLocation }) => {
@@ -55,7 +65,10 @@ const MapPicker = ({ location, setLocation }) => {
         id="mapid"
         css={css`
           height: 180px;
-          width: calc(100% - 25px);
+          width: 100%;
+          @media (max-width: 800px) {
+            margin-top: 40px;
+          }
         `}
       />
     </div>

@@ -4,6 +4,7 @@ import AddStuffs from "./components/AddStuffs/AddStuffs";
 import "./App.css";
 import { openDB, deleteDB } from "idb";
 import StuffsList from "./components/StuffsList";
+import { Router } from "@reach/router";
 
 const initDatabase = async () => {
   const dbName = "stuffs.lol";
@@ -26,6 +27,14 @@ const initStuffs = async () => {
   return stuffs;
 };
 
+const initKeys = async () => {
+  const [db, storeName] = await initDatabase();
+  const tx = db.transaction(storeName, "readonly");
+  const keys = tx.objectStore(storeName).getAllKeys();
+  await tx.done;
+  return keys;
+};
+
 const storeStuffs = async stuff => {
   const [db, storeName] = await initDatabase();
   const tx = db.transaction(storeName, "readwrite");
@@ -36,42 +45,64 @@ const storeStuffs = async stuff => {
 
 const sortStuffs = async () => {
   let stuffs = await initStuffs();
-  // sort the stuffs in DESC order by Date
-
-  stuffs = stuffs.sort((a, b) => {
-    return new Date(b.datetime) - new Date(a.datetime);
+  let keys = await initKeys();
+  stuffs.forEach((stuff, index) => {
+    stuff.key = keys[index];
   });
 
+  stuffs = stuffs.sort((a, b) => {
+    // return new Date(b.datetime) - new Date(a.datetime);
+    return b.id - a.id;
+  });
+  console.log(stuffs);
   return stuffs;
 };
 
+const deleteStuffs = async key => {
+  const [db, storeName] = await initDatabase();
+  const tx = db.transaction(storeName, "readwrite");
+  const stuffs = tx.objectStore(storeName);
+  await stuffs.delete(key);
+  await tx.done;
+};
+
 function App() {
-  const [screen, setScreen] = useState("homepage");
   const [stuffs, setStuffs] = useState([]);
 
+  const reloadStuffs = async () => {
+    const store = await sortStuffs();
+    setStuffs(store);
+  };
+
   useEffect(() => {
-    (async () => {
-      const store = await sortStuffs();
-      setStuffs(store);
-    })();
+    reloadStuffs();
   }, [setStuffs]);
 
   return (
     <div className="App">
-      {screen === "homepage" && <Homepage setScreen={setScreen} />}
-      {screen === "addStuffsFromHomepage" && (
+      <Router>
+        <Homepage path="/" />
+
         <AddStuffs
           comingFromHomepage
-          setScreen={setScreen}
           storeStuffs={storeStuffs}
+          reloadStuffs={reloadStuffs}
+          path="start-stuffs"
         />
-      )}
-      {screen === "addStuffs" && (
-        <AddStuffs setScreen={setScreen} storeStuffs={storeStuffs} />
-      )}
-      {screen === "stuffs" && (
-        <StuffsList stuffs={stuffs} setScreen={setScreen} />
-      )}
+
+        <AddStuffs
+          storeStuffs={storeStuffs}
+          reloadStuffs={reloadStuffs}
+          path="add-stuffs"
+        />
+
+        <StuffsList
+          stuffs={stuffs}
+          deleteStuffs={deleteStuffs}
+          reloadStuffs={reloadStuffs}
+          path="stuffs/*"
+        />
+      </Router>
     </div>
   );
 }
