@@ -5,6 +5,7 @@ import "./App.css";
 import { openDB, deleteDB } from "idb";
 import StuffsList from "./components/StuffsList";
 import { Router } from "@reach/router";
+import Login from "./Login";
 
 const initDatabase = async () => {
   const dbName = "stuffs.lol";
@@ -68,6 +69,7 @@ const deleteStuffs = async key => {
 
 function App() {
   const [stuffs, setStuffs] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const reloadStuffs = async () => {
     const store = await sortStuffs();
@@ -96,10 +98,13 @@ function App() {
           path="add-stuffs"
         />
 
+        <Login path="login" loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+
         <StuffsList
           stuffs={stuffs}
           deleteStuffs={deleteStuffs}
           reloadStuffs={reloadStuffs}
+          loggedIn={loggedIn}
           path="stuffs/*"
         />
       </Router>

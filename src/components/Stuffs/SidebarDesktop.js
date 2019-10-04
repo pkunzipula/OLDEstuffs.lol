@@ -7,7 +7,8 @@ const SidebarDesktop = ({
   stuffs,
   showStuffs,
   setShowStuffs,
-  setCurrentStuffs
+  setCurrentStuffs,
+  loggedIn
 }) => {
   return (
     <div
@@ -106,7 +107,13 @@ const SidebarDesktop = ({
       </ul>
       <div>
         <button
-          onClick={() => navigate("/add-stuffs")}
+          onClick={() => {
+            if (!loggedIn) {
+              navigate("/login");
+              return;
+            }
+            navigate("/add-stuffs");
+          }}
           css={css`
             text-align: center;
             font-size: 2rem;

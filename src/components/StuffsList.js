@@ -8,7 +8,7 @@ import { Router } from "@reach/router";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
-const StuffsList = ({ stuffs, deleteStuffs, reloadStuffs }) => {
+const StuffsList = ({ stuffs, deleteStuffs, reloadStuffs, loggedIn }) => {
   const [showStuffs, setShowStuffs] = useState("false");
   const [currentStuffs, setCurrentStuffs] = useState({});
   return (
@@ -35,6 +35,7 @@ const StuffsList = ({ stuffs, deleteStuffs, reloadStuffs }) => {
         setShowStuffs={setShowStuffs}
         showStuffs={showStuffs}
         setCurrentStuffs={setCurrentStuffs}
+        loggedIn={loggedIn}
       />
       <SidebarMobile setShowStuffs={setShowStuffs} showStuffs={showStuffs} />
       <Router>
